@@ -7,7 +7,7 @@ app.set("view engine", "ejs");
 function generateRandomString() {
   let random = (Math.random() + 1).toString(36).substring(6);
   console.log("random", random);
-return random;
+  return random;
 }
 
 const urlDatabase = {
@@ -38,11 +38,21 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
+app.post(`/urls/${"9sm5xK"}/delete`, (req, res) => {
+  delete urlDatabase["9sm5xK"];
+  res.redirect("/urls");
+});
+
+app.post(`/urls/${"b2xVn2"}/delete`, (req, res) => {
+  delete urlDatabase["9sm5xK"];
+  res.redirect("/urls");
+});
+
 //
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id];
   res.redirect(longURL);
-  });
+});
 
 // app.get("/u/:id", (req, res) => {
 //   const longURL = urlDatabase.longURL;
