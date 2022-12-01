@@ -4,7 +4,11 @@ const PORT = 8080; // default port 8080
 
 app.set("view engine", "ejs");
 
-function generateRandomString() {}
+function generateRandomString() {
+  let random = (Math.random() + 1).toString(36).substring(6);
+  console.log("random", r);
+return random;
+}
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -27,28 +31,27 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  // console.log(urlDatabase) 
-  Object.assign(urlDatabase, req.body);
-  console.log(urlDatabase)
-  res.redirect("/urls/:id");
+  // console.log(req.body);  
+  //Object.assign(urlDatabase, req.body);
+  const shortURL = generateRandomString();
+  urlDatabase[shortURL] = req.body.longURL;
+  console.log(urlDatabase);
+  res.redirect(`/urls/${shortURL}`);
   // res.send("Ok"); // Respond with 'Ok' (we will replace this)
 });
 
-app.get("/u/:id", (req, res) => {   
+app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase.longURL;
-    res.redirect(longURL);
-  });
+  res.redirect(longURL);
+});
 
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// browser is requesting this URL http://localhost:8080/urls/9sm5xK
-
 app.get("/urls/:myid", (req, res) => {
-  const templateVars = { 
-    id: req.params.myid, 
+  const templateVars = {
+    id: req.params.myid,
     longURL: urlDatabase[req.params.myid]
   };
   res.render("urls_show", templateVars);
@@ -62,4 +65,3 @@ app.get("/hello", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
