@@ -38,15 +38,17 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
-app.post(`/urls/${"9sm5xK"}/delete`, (req, res) => {
-  delete urlDatabase["9sm5xK"];
+
+app.post("/urls/:id/delete", (req, res) => {
+  delete urlDatabase[req.params.id];
   res.redirect("/urls");
 });
 
-app.post(`/urls/${"b2xVn2"}/delete`, (req, res) => {
-  delete urlDatabase["9sm5xK"];
+app.post("/urls/:id", (req, res) => {
+  urlDatabase[req.params.id] = req.body.longURL;
   res.redirect("/urls");
 });
+
 
 //
 app.get("/u/:id", (req, res) => {
@@ -64,6 +66,7 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:myid", (req, res) => {
+  console.log(urlDatabase[req.params.myid])
   const templateVars = {
     id: req.params.myid,
     longURL: urlDatabase[req.params.myid]
